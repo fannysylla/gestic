@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block content %} 
+<a name="" id="" class="btn btn-primary" href=" {{path('ad.refrentiel.creer')}} " role="button">Nouveau</a>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for referentiel in referentiels %}
+        <tr>
+      <th scope="row">{{referentiel.id}} </th>
+      <td>{{referentiel.nomref}}</td>
+      <td>  
+            <a name="" id="" class="btn btn-success" href="#" role="button">edit</a>
+            <a name="" id="" class="btn btn-danger" href="#" role="button">delete</a>
+     </td>
+    </tr>
+    {% endfor %}
+    
+    
+  </tbody>
+</table>
+{% endblock %}
