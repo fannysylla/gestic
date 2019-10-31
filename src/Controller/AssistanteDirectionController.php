@@ -31,7 +31,7 @@ class AssistanteDirectionController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             
-            $entityManager = $this->getDoctrine()->getManager();gi
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($referentiel);
             $entityManager->flush();
     
@@ -43,21 +43,36 @@ class AssistanteDirectionController extends AbstractController
         ]);
     }
      /**
-     * @Route("/ad/referentiel/edit", name="ad.refrentiel.edit")
+     * @Route("/ad/referentiel/edit/{id}", name="ad.refrentiel.edit")
      */
-    public function editReferentiel()
+    public function editReferentiel($id,Request $request,ReferentielRepository $repo)
     {
-        return $this->render('assistante_direction/referentiel/index.html.twig', [
-            'controller_name' => 'AssistanteDirectionController',
+        $referentiel=$repo->find($id);
+        $form = $this->createForm(AjoutReferentielType::class, $referentiel);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($referentiel);
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('ad.refrentiel.liste');
+        }
+        return $this->render('assistante_direction/referentiel/form.html.twig', [
+            'form' => $form->createView(),
+
         ]);
     }
     /**
-     * @Route("/ad/referentiel/delete", name="ad.refrentiel.delete")
+     * @Route("/ad/referentiel/delete/{id}", name="ad.refrentiel.delete")
      */
-    public function deleteReferentiel()
+    public function deleteReferentiel($id,ReferentielRepository $repo)
     {
-        return $this->render('assistante_direction/referentiel/index.html.twig', [
-            'controller_name' => 'AssistanteDirectionController',
-        ]);
+        $referentiel=$repo->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($referentiel);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('ad.refrentiel.liste');
     }
 }

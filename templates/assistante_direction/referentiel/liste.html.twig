@@ -16,8 +16,8 @@
       <th scope="row">{{referentiel.id}} </th>
       <td>{{referentiel.nomref}}</td>
       <td>  
-            <a name="" id="" class="btn btn-success" href="#" role="button">edit</a>
-            <a name="" id="" class="btn btn-danger" href="#" role="button">delete</a>
+            <a name="" id="" class="btn btn-success" href="{{path('ad.refrentiel.edit',{id:referentiel.id})}}" role="button">edit</a>
+            <a name="" Onclick="return confirm('etes-vous vraiment sur de vouloir supprimer')" id="" class="btn btn-danger" href="{{path('ad.refrentiel.delete',{id:referentiel.id})}}" role="button">delete</a>
      </td>
     </tr>
     {% endfor %}
