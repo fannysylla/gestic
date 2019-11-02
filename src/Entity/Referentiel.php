@@ -2,10 +2,14 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReferentielRepository")
+ * @UniqueEntity("nomref0 ",message="ce referentiel existe deja")
  */
 class Referentiel
 {
@@ -23,6 +27,16 @@ class Referentiel
      */
     private $nomref;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Refsession", mappedBy="referentiel")
+     */
+    private $refsessions;
+
+    public function __construct()
+    {
+        $this->refsessions = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -36,6 +50,37 @@ class Referentiel
     public function setNomref(string $nomref): self
     {
         $this->nomref = $nomref;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Refsession[]
+     */
+    public function getRefsessions(): Collection
+    {
+        return $this->refsessions;
+    }
+
+    public function addRefsession(Refsession $refsession): self
+    {
+        if (!$this->refsessions->contains($refsession)) {
+            $this->refsessions[] = $refsession;
+            $refsession->setReferentiel($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRefsession(Refsession $refsession): self
+    {
+        if ($this->refsessions->contains($refsession)) {
+            $this->refsessions->removeElement($refsession);
+            // set the owning side to null (unless already changed)
+            if ($refsession->getReferentiel() === $this) {
+                $refsession->setReferentiel(null);
+            }
+        }
 
         return $this;
     }
