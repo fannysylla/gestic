@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReferentielRepository")
- * @UniqueEntity("nomref0 ",message="ce referentiel existe deja")
+ * @UniqueEntity("nomref ",message="ce referentiel existe deja")
  */
 class Referentiel
 {
@@ -21,7 +21,7 @@ class Referentiel
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)  
+     * @ORM\Column(type="string", length=255, unique=true)  
      * @Assert\NotBlank(message="le nom ne doit pas etre vide")
      * 
      */

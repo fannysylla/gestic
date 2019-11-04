@@ -2,20 +2,24 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\UserType;
 use App\Entity\Session;
 use App\Form\SessionType;
 use App\Entity\Referentiel;
 use App\Form\AjoutReferentielType;
+use App\Repository\UserRepository;
 use App\Repository\SessionRepository;
 use App\Repository\ReferentielRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AssistanteDirectionController extends AbstractController
 {
     /**
-     * @Route("/ad/referentiel", name="ad.refrentiel.liste")
+     * @Route("/ad/referentiel", name="ad.referentiel.liste")
      */
     public function listeReferentiel(ReferentielRepository $repo)
     {
@@ -25,7 +29,7 @@ class AssistanteDirectionController extends AbstractController
         ]);
     }
     /**
-     * @Route("/ad/referentiel/creer", name="ad.refrentiel.creer")
+     * @Route("/ad/referentiel/creer", name="ad.referentiel.creer")
      */
     public function creerReferentiel(Request $request)
     {
@@ -38,7 +42,7 @@ class AssistanteDirectionController extends AbstractController
             $entityManager->persist($referentiel);
             $entityManager->flush();
     
-            return $this->redirectToRoute('ad.refrentiel.liste');
+            return $this->redirectToRoute('ad.referentiel.liste');
         }
         return $this->render('assistante_direction/referentiel/form.html.twig', [
             'form' => $form->createView(),
@@ -46,7 +50,7 @@ class AssistanteDirectionController extends AbstractController
         ]);
     }
     /**
-     * @Route("/ad/referentiel/edit/{id}", name="ad.refrentiel.edit")
+     * @Route("/ad/referentiel/edit/{id}", name="ad.referentiel.edit")
      */
     public function editReferentiel($id,Request $request,ReferentielRepository $repo)
     {
@@ -59,7 +63,7 @@ class AssistanteDirectionController extends AbstractController
             $entityManager->persist($referentiel);
             $entityManager->flush();
     
-            return $this->redirectToRoute('ad.refrentiel.liste');
+            return $this->redirectToRoute('ad.referentiel.liste');
         }
         return $this->render('assistante_direction/referentiel/form.html.twig', [
             'form' => $form->createView(),
@@ -67,7 +71,7 @@ class AssistanteDirectionController extends AbstractController
         ]);
     }
     /**
-     * @Route("/ad/referentiel/delete/{id}", name="ad.refrentiel.delete")
+     * @Route("/ad/referentiel/delete/{id}", name="ad.referentiel.delete")
      */
     public function deleteReferentiel($id,ReferentielRepository $repo)
     {
@@ -76,13 +80,20 @@ class AssistanteDirectionController extends AbstractController
         $entityManager->remove($referentiel);
         $entityManager->flush();
 
-        return $this->redirectToRoute('ad.refrentiel.liste');
+        return $this->redirectToRoute('ad.referentiel.liste');
     }
 
     
 
+
+
+
+
+
+
+
     /**
-     * @Route("/ad/session", name="ad.session.liste")
+     * @Route("/ad/session/liste", name="ad.session.liste")
      */
     public function listeSession(SessionRepository $repo)
     {
@@ -145,4 +156,80 @@ class AssistanteDirectionController extends AbstractController
 
         return $this->redirectToRoute('ad.session.liste');
     }
+
+
+
+
+
+
+
+
+
+    /**
+     * @Route("/ad/user", name="ad.user.liste")
+     */
+    public function listeUser(UserRepository $repo)
+    {
+        $users=$repo->findAll();
+        return $this->render('assistante_direction/user/liste.html.twig', [
+            'users' => $users,
+        ]);
+    }
+    /**
+     * @Route("/ad/user/creer", name="ad.user.creer")
+     */
+    public function creerUser(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $user=new User();
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $user->setRoles([$user->getRoles()]);
+            $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
+            $entityManager->persist($user);
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('ad.user.liste');
+        }
+        return $this->render('assistante_direction/user/form.html.twig', [
+            'form' => $form->createView(),
+
+        ]);
+    }
+    /**
+     * @Route("/ad/user/edit/{id}", name="ad.user.edit")
+     */
+    public function editUser($id,Request $request,UserRepository $repo)
+    {
+        $user=$repo->find($id);
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('ad.user.liste');
+        }
+        return $this->render('assistante_direction/user/form.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+    /**
+     * @Route("/ad/user/delete/{id}", name="ad.user.delete")
+     */
+    public function deleteUser($id,UserRepository $repo)
+    {
+        $user=$repo->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('ad.user.liste');
+    }
 }
+
+

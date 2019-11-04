@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block content %} 
-<a name="" id="" class="btn btn-primary" href=" {{path('ad.refrentiel.creer')}} " role="button">NOUVEAU</a>
+<a name="" id="" class="btn btn-primary" href=" {{path('ad.referentiel.creer')}} " role="button">NOUVEAU</a>
 <table class="table table-bordered">
     <thead>
     <tr>
@@ -16,8 +16,8 @@
         <th scope="row">{{referentiel.id}} </th>
         <td>{{referentiel.nomref}}</td>
         <td>  
-            <a name="" id="" class="btn btn-success" href="{{path('ad.refrentiel.edit',{id:referentiel.id})}}" role="button">Edit</a>
-                <a name="" Onclick="return confirm('etes-vous vraiment sur de vouloir supprimer')" id="" class="btn btn-danger" href="{{path('ad.refrentiel.delete',{id:referentiel.id})}}" role="button">Delete</a>
+            <a name="" id="" class="btn btn-success" href="{{path('ad.referentiel.edit',{id:referentiel.id})}}" role="button">Edit</a>
+                <a name="" Onclick="return confirm('etes-vous vraiment sur de vouloir supprimer')" id="" class="btn btn-danger" href="{{path('ad.referentiel.delete',{id:referentiel.id})}}" role="button">Delete</a>
         </td>
         </tr>
     {% endfor %}

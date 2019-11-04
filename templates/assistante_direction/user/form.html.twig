@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block content %} 
+
+{{ form_start(form) }}
+  <div class="my-custom-class-for-errors">
+      {{ form_errors(form) }}
+  </div>
+
+  <div class="row">
+      <div class="col-md-12">
+          <div class="form-control">
+              <i class="fa fa-calendar"></i> {{ form_label(form.prenom) }}
+              {{ form_widget(form.prenom, {'attr': {'class': 'dogfjk'}}) }}
+              <div class="form-error">
+                  {{ form_errors(form.prenom) }}
+              </div>
+          </div>
+      </div>
+
+      <div class="col-md-12">
+          <div class="form-control">
+              <i class="fa fa-calendar"></i> {{ form_label(form.nom) }}
+              {{ form_widget(form.nom, {'attr': {'class': 'dogfjk'}}) }}
+              <div class="form-error">
+                  {{ form_errors(form.nom) }}
+              </div>
+          </div>
+      </div>
+
+      <div class="col-md-12">
+          <div class="form-control">
+              <i class="fa fa-calendar"></i> {{ form_label(form.login) }}
+              {{ form_widget(form.login, {'attr': {'class': 'dogfjk'}}) }}
+              <div class="form-error">
+                  {{ form_errors(form.login) }}
+              </div>
+          </div>
+      </div>
+
+      <div class="col-md-12">
+          <div class="form-control">
+              <i class="fa fa-calendar"></i> {{ form_label(form.password) }}
+              {{ form_widget(form.password, {'attr': {'class': 'dogfjk'}}) }}
+              <div class="form-error">
+                  {{ form_errors(form.password) }}
+              </div>
+          </div>
+      </div>
+  </div>
+{{ form_end(form) }}
+{% endblock %}

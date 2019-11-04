@@ -20,7 +20,7 @@ class AjoutReferentielType extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'form control'
                 ]
-                ])
+            ])
             ->add('creer', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-primary'],
                 ]);

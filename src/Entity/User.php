@@ -75,14 +75,17 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        $roles = [];
+        if (is_array($this->roles)) {
+            $roles = $this->roles;
+        }
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_ASSISTANTE_DIRECTION';
 
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles($roles): self
     {
         $this->roles = $roles;
 
