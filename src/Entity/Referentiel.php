@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReferentielRepository")
- * @UniqueEntity("nomref ",message="ce referentiel existe deja")
+ *   @UniqueEntity("nomref",message="ce referentiel existe deja")
  */
 class Referentiel
 {
