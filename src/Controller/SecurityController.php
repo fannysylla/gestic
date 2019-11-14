@@ -15,7 +15,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-        return $this->redirectToRoute('ad.refrentiel.liste');
+        return $this->redirectToRoute('ad.referentiel.liste');
         }
 
         // get the login error if there is onefooterfooterfooter

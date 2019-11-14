@@ -48,9 +48,15 @@ class Session
      */
     private $datefin;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Apprenant", mappedBy="session")
+     */
+    private $apprenants;
+
     public function __construct()
     {
         $this->refsessions = new ArrayCollection();
+        $this->apprenants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -147,5 +153,40 @@ class Session
         $this->datefin = $datefin;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Apprenant[]
+     */
+    public function getApprenants(): Collection
+    {
+        return $this->apprenants;
+    }
+
+    public function addApprenant(Apprenant $apprenant): self
+    {
+        if (!$this->apprenants->contains($apprenant)) {
+            $this->apprenants[] = $apprenant;
+            $apprenant->setSession($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApprenant(Apprenant $apprenant): self
+    {
+        if ($this->apprenants->contains($apprenant)) {
+            $this->apprenants->removeElement($apprenant);
+            // set the owning side to null (unless already changed)
+            if ($apprenant->getSession() === $this) {
+                $apprenant->setSession(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString() {
+        return $this->nomsess;
     }
 }

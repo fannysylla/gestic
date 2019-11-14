@@ -5,16 +5,20 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Entity\Session;
+use App\Entity\Apprenant;
 use App\Form\SessionType;
 use App\Entity\Referentiel;
+use App\Form\ApprenantType;
 use App\Form\AjoutReferentielType;
 use App\Repository\UserRepository;
 use App\Repository\SessionRepository;
+use App\Repository\ApprenantRepository;
 use App\Repository\ReferentielRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AssistanteDirectionController extends AbstractController
 {
@@ -182,11 +186,14 @@ class AssistanteDirectionController extends AbstractController
     {
         $user=new User();
         $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        $form->add('creer', SubmitType::class, [
+            'attr' => ['class' => 'btn btn-primary'],
+        ]);
+        $form->handleRequest($request); 
         if ($form->isSubmitted() && $form->isValid()) {
             
             $entityManager = $this->getDoctrine()->getManager();
-            $user->setRoles([$user->getRoles()]);
+            $user->setRoles(['ROLE_ASSISTANT_DIRECTION']);
             $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
             $entityManager->persist($user);
             $entityManager->flush();
@@ -230,6 +237,78 @@ class AssistanteDirectionController extends AbstractController
 
         return $this->redirectToRoute('ad.user.liste');
     }
+
+
+
+
+ /**
+     * @Route("/ad/apprenant", name="ad.apprenant.liste")
+     */
+    public function listeApprenant(ApprenantRepository $repo)
+    {
+        $apprenants=$repo->findAll();
+        return $this->render('assistante_direction/apprenant/liste.html.twig', [
+            'apprenants' => $apprenants,
+        ]);
+    }
+    /**
+     * @Route("/ad/apprenant/creer", name="ad.apprenant.creer")
+     */
+    public function creerApprenant(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $apprenant=new Apprenant();
+        $form = $this->createForm(ApprenantType::class, $apprenant);
+        $form->handleRequest($request); 
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $apprenant->getUser()->setRoles(['ROLE_APPRENANT']);
+            $entityManager->persist($apprenant);
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('ad.apprenant.liste');
+        }
+        
+        return $this->render('assistante_direction/apprenant/form.html.twig', [
+            'form' => $form->createView(),
+
+        ]);
+    }
+
+    /**
+     * @Route("/ad/apprenant/edit/{id}", name="ad.apprenant.edit")
+     */
+    public function editApprenant($id,Request $request,ApprenantRepository $repo)
+    {
+        $apprenant=$repo->find($id);
+        $form = $this->createForm(ApprenantType::class, $apprenant);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($apprenant);
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('ad.apprenant.liste');
+        }
+        return $this->render('assistante_direction/apprenant/form.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+    /**
+     * @Route("/ad/apprenant/delete/{id}", name="ad.apprenant.delete")
+     */
+    public function deleteApprenant($id,ApprenantRepository $repo)
+    {
+        $apprenant=$repo->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($apprenant);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('ad.apprenant.liste');
+    }
+
+    
 }
 
 

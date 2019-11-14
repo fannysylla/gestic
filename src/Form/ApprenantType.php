@@ -2,25 +2,31 @@
 
 namespace App\Form;
 
-use App\Entity\Session;
+use App\Form\UserType;
+use App\Entity\Apprenant;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
-class SessionType extends AbstractType
+
+class ApprenantType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nomsess',TextType::class)
-            ->add('effectif',TextType::class)
-            ->add('annee',TextType::class)
-            ->add('datedebut',DateType::class ,['widget'=>'single_text'])
-            ->add('datefin' ,DateType::class ,['widget'=>'single_text'])
+            ->add('telephone')
+            ->add('email')
+            ->add('sex')
+            ->add('statut')
+            ->add('adresse')
+            ->add('Referentiel')
+            ->add('user', UserType::class)
+            ->add('session')
+            ->add('datenaiss', DateType::class,['widget'=>'single_text'])
+
             ->add('creer', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-primary'],
                 ])
@@ -30,7 +36,7 @@ class SessionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Session::class,
+            'data_class' => Apprenant::class,
         ]);
     }
 }

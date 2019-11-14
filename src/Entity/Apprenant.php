@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
+
+
 use Doctrine\ORM\Mapping as ORM;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ApprenantRepository")
  */
-class Apprenant
+class Apprenant 
 {
     /**
      * @ORM\Id()
@@ -26,15 +29,6 @@ class Apprenant
      */
     private $email;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $datenaiss;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $lieunaiss;
 
     /**
      * @ORM\Column(type="string", length=10)
@@ -52,6 +46,27 @@ class Apprenant
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $statut;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $adresse;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Session", inversedBy="apprenants")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $session;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $datenaiss;
 
     public function getId(): ?int
     {
@@ -82,30 +97,7 @@ class Apprenant
         return $this;
     }
 
-    public function getDatenaiss(): ?\DateTimeInterface
-    {
-        return $this->datenaiss;
-    }
-
-    public function setDatenaiss(\DateTimeInterface $datenaiss): self
-    {
-        $this->datenaiss = $datenaiss;
-
-        return $this;
-    }
-
-    public function getLieunaiss(): ?string
-    {
-        return $this->lieunaiss;
-    }
-
-    public function setLieunaiss(string $lieunaiss): self
-    {
-        $this->lieunaiss = $lieunaiss;
-
-        return $this;
-    }
-
+    
     public function getSex(): ?string
     {
         return $this->sex;
@@ -138,6 +130,54 @@ class Apprenant
     public function setUser(User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $statut): self
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getSession(): ?Session
+    {
+        return $this->session;
+    }
+
+    public function setSession(?Session $session): self
+    {
+        $this->session = $session;
+
+        return $this;
+    }
+
+    public function getDatenaiss(): ?\DateTimeInterface
+    {
+        return $this->datenaiss;
+    }
+
+    public function setDatenaiss(\DateTimeInterface $datenaiss): self
+    {
+        $this->datenaiss = $datenaiss;
 
         return $this;
     }

@@ -1,31 +1,38 @@
 {% extends 'base.html.twig' %}
 
 {% block content %} 
-<a name="" id="" class="btn btn-primary" href=" {{path('ad.session.creer')}} " role="button">NOUVEAU</a>
+<a name="" id="" class="btn btn-primary" href=" {{path('ad.apprenant.creer')}} " role="button">NOUVEAU</a>
 <table class="table table-bordered">
     <thead>
     <tr>
         <th scope="col">ID</th>
         <th scope="col">Nom</th>
-        <th scope="col">Année</th>
-        <th scope="col">Date Début</th>
-        <th scope="col">Date Fin</th>
-        <th scope="col">Effectif</th>
-        <th scope="col">Action</th>
+        <th scope="col">Prenom</th>
+        <th scope="col">Email</th>
+        <th scope="col">Adresse</th>
+        <th scope="col">Telephone</th>
+        <th scope="col">Date de naissance</th>
+        <th scope="col">Session</th>
+        <th scope="col">Referentiel</th>
+        <th scope="col">Statut</th>
+        <th scope="col">Login</th>
+        <th scope="col">Password</th>
         </tr>
     </thead>
     <tbody>
-        {% for session in sessions %}
+        {% for apprenant in apprenants %}
             <tr>
-        <th scope="row">{{session.id}} </th>
-        <td>{{session.nomsess}}</td>
-        <td>{{session.annee}}</td>
-        <td>{{session.datedebut | date('d-m-y')}}</td>
-        <td>{{session.datefin | date('d-m-y')}}</td>
-        <td>{{session.effectif}}</td>
+        <th scope="row">{{apprenant.id}} </th>
+        <td>{{apprenant.user}}</td>
+        <td>{{apprenant.email}}</td>
+        <td>{{apprenant.adresse}}</td>
+        <td>{{apprenant.datenaiss|date('d-m-Y')}}</td>
+        <td>{{apprenant.session}}</td>
+        <td>{{apprenant.referentiel}}</td>
+        <td>{{apprenant.statut}}</td>
         <td> 
-            <a name="" id="" class="btn btn-success" href="{{path('ad.session.edit',{id:session.id})}}" role="button">Edit</a>
-                <a name="" Onclick="return confirm('etes-vous vraiment sur de vouloir supprimer')" id="" class="btn btn-danger" href="{{path('ad.session.delete',{id:session.id})}}" role="button">Delete</a>
+            <a name="" id="" class="btn btn-success" href="{{path('ad.apprenant.edit',{id:apprenant.id})}}" role="button">Edit</a>
+                <a name="" Onclick="return confirm('etes-vous vraiment sur de vouloir supprimer')" id="" class="btn btn-danger" href="{{path('ad.apprenant.delete',{id:apprenant.id})}}" role="button">Delete</a>
         </td>
         </tr>
     {% endfor %}
